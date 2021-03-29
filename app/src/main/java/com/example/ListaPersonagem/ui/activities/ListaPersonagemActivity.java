@@ -22,29 +22,25 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ListaPersonagemActivity extends AppCompatActivity {
+    private  final PersonagenDao dao = new PersonagenDao();
     @Override
     protected  void  onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_personagem);
         setTitle("lista Personagens");
-
+        dao.salva(new Personagen("Riu","10031970","1.80"));
+        dao.salva(new Personagen("Ken","10031971","1.79"));
 
 
         FloatingActionButton BtNovoPersonagem = findViewById(R.id.fab_add);
         BtNovoPersonagem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 startActivity( new Intent( ListaPersonagemActivity.this, FormularioPersonagemActivity.class));
             }
         });
-
-       // List<String> personagem = new ArrayList<>(Arrays.asList("Alex","Ken","Ryu","Gui"));
-
-
-
-
-
     }
     @Override
     protected  void onResume()
@@ -65,8 +61,9 @@ public class ListaPersonagemActivity extends AppCompatActivity {
 
                 Log.i("posicao", "" + posicao);
 
-               Intent vaiParaOfotmulario = new Intent(ListaPersonagemActivity.this,FormularioPersonagemActivity.class);
-               startActivity(vaiParaOfotmulario);
+                Intent vaiParaOfotmulario = new Intent(ListaPersonagemActivity.this,FormularioPersonagemActivity.class);
+                vaiParaOfotmulario.putExtra("personagem",personagenEscolhido);
+                startActivity(vaiParaOfotmulario);
 
             }
         });
