@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 public class Personagen implements Serializable {
+    // variaveis de que serao usadas para receber dados do personagem
     private  String nome;
     private  String nacimento;
     private  String altura;
@@ -19,41 +20,43 @@ public class Personagen implements Serializable {
 
     }
 
-    public String getNome() {
-        return nome;
-    }
+       public  Personagen (){};
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+        public String getNome () {
+            return nome;
+        }
 
-    public String getNacimento() {
-        return nacimento;
-    }
+        public void setNome (String nome){
+            this.nome = nome;
+        }
 
-    public void setNacimento(String nacimento) {
-        this.nacimento = nacimento;
-    }
+        public String getNacimento () {
+            return nacimento;
+        }
 
-    public String getAltura() {
-        return altura;
-    }
+        public void setNacimento (String nacimento){
+            this.nacimento = nacimento;
+        }
 
-    public void setAltura(String altura) {
-        this.altura = altura;
-    }
+        public String getAltura () {
+            return altura;
+        }
+
+        public void setAltura (String altura){
+            this.altura = altura;
+        }
 
     @NonNull
     @Override
-    public String toString()
+    public String toString()// para poder exibir nome salvo do personagem la lissta
     {
         return  nome;
     }
-    public void setId(int id)
+    public void setId(int id)// setando id dos personagens salvos
     {
         this.id = id;
     }
-    public int  getId()
+    public int  getId()// pegando o id dos pesonagens salvos
     {
        return id;
     }

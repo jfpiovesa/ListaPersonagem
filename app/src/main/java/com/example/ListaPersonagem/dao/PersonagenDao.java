@@ -3,20 +3,20 @@ package com.example.ListaPersonagem.dao;
 import com.example.ListaPersonagem.model.Personagen;
 
 import java.util.ArrayList;
-import  java.util.List;
+import java.util.List;
 
-public class PersonagenDao {
+public class PersonagenDao  {
 
     private final static List<Personagen> personagens = new ArrayList<>();
     private  static int contadorDeId = 1;
 
-    public void salva(Personagen personagemSalvo)
+    public void salva(Personagen personagemSalvo)//metodo para salvar dados do personagem
     {
         personagemSalvo.setId(contadorDeId);
           personagens.add(personagemSalvo);
           contadorDeId++;
     }
-    public  void  editar(Personagen personagen)
+    public  void  editar(Personagen personagen)//metoro para poder editar dados do personagem
     {
         Personagen  personagemEscolhido = null;
         for (Personagen p: personagens )

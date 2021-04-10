@@ -1,19 +1,16 @@
 package com.example.ListaPersonagem.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ListaPersonagem.dao.PersonagenDao;
 import com.example.ListaPersonagem.model.Personagen;
 import com.example.auladia11.R;
-
-import java.io.Serializable;
 
 public class FormularioPersonagemActivity extends AppCompatActivity {
 
@@ -21,7 +18,12 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
     private   EditText campoNacimento;
     private   EditText campoAltura;
 
-    private  final PersonagenDao dao = new PersonagenDao();
+   private String nome;
+   private String nascimento;
+   private String altura;
+
+    private  final  PersonagenDao dao = new PersonagenDao();
+     private Personagen Personagen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -30,46 +32,55 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_formulario_personagem);
         setTitle("Formulario Personagens");
 
+        inicializacaoCampos();
+        configuraBotao();
 
+        Intent dados = getIntent();
+        if (dados.hasExtra( "personagen"))
+        {
+            Personagen personagen = (Personagen) dados.getSerializableExtra("personagen");
+            campoNome.setText(personagen.getNome());
+            campoNacimento.setText(personagen.getNacimento());
+            campoAltura.setText(personagen.getAltura());
+        }
+        else
+        {
+            Personagen  = new Personagen();
+        }
+    }
 
-         campoNome = findViewById(R.id.editTextText_Name);
-         campoNacimento = findViewById(R.id.editText_Nascimento);
-         campoAltura = findViewById(R.id.editText_Altura);
-
+    private void configuraBotao() {
+        // Pegando  o botao de salvar, para por um listener de ações nele, no caso, salvar  informaçõa do personagem.
         Button btSalvar =  findViewById(R.id.bt_salvar);
         btSalvar.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-
-                String nome = campoNome.getText().toString();
-                String nascimento = campoNacimento.getText().toString();
-                String altura = campoAltura.getText().toString();
-
-                new Personagen(nome,nascimento,altura);
-
+                nome = campoNome.getText().toString();
+               nascimento = campoNacimento.getText().toString();
+               altura = campoAltura.getText().toString();
 
                 Personagen personagemSalvo = new Personagen(nome,nascimento,altura);
-
                 dao.salva(personagemSalvo);
-                finish();
+                finish();// finalizando a Activity do formulario sem sobre escrever a lista
 
-                ///startActivity(new Intent(FormularioPersonagemActivity.this,ListaPersonagemActivity.class));
-                //Toast.makeText( FormularioPersonagemActivity.this, personagemSalvo.getNome() + "-" + personagemSalvo.getAltura()+"-"+ personagemSalvo.getNacimento() ,Toast.LENGTH_SHORT).show();
+
+                // aqui set(salva) os dados do personagem para que se edite depois
                 personagemSalvo.setNome(nome);
-                personagemSalvo.setAltura(altura);
                 personagemSalvo.setNacimento(nascimento);
+                personagemSalvo.setAltura(altura);
                 dao.editar(personagemSalvo);
-
-               Intent dados = getIntent();
-               Personagen ps = (Personagen) dados.getSerializableExtra("Personagen");
-               campoNome.setText(ps.getNome());
-               campoNacimento.setText(ps.getNacimento());
-               campoAltura.setText(ps.getAltura());
 
             }
         }
         );
+    }
+
+    private void inicializacaoCampos()
+    {//Pegando os  ids referentes aos dados do personagem
+        campoNome = findViewById(R.id.editTextText_Name);
+        campoNacimento = findViewById(R.id.editText_Nascimento);
+        campoAltura = findViewById(R.id.editText_Altura);
     }
 }
