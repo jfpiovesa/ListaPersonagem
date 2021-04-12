@@ -5,36 +5,42 @@ import com.example.ListaPersonagem.model.Personagen;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonagenDao  {
+public class PersonagenDao {
 
     private final static List<Personagen> personagens = new ArrayList<>();
-    private  static int contadorDeId = 1;
+    private static int contadorDeId = 1;
 
     public void salva(Personagen personagemSalvo)//metodo para salvar dados do personagem
     {
         personagemSalvo.setId(contadorDeId);
-          personagens.add(personagemSalvo);
-          contadorDeId++;
+        personagens.add(personagemSalvo);
+        AtualizaId();
     }
-    public  void  editar(Personagen personagen)//metoro para poder editar dados do personagem
+
+    private void AtualizaId() {
+        contadorDeId++;
+    }
+
+    public void editar(Personagen personagen)//metoro para poder editar dados do personagem
     {
-        Personagen  personagemEscolhido = null;
-        for (Personagen p: personagens )
-        {
-            if (p.getId() == personagen.getId() )
-            {
-                personagemEscolhido = p;
-            }
-        }
-        if (personagemEscolhido != null)
-        {
+        Personagen personagemEscolhido = BuscaPersonagenId(personagen);
+        if (personagemEscolhido != null) {
             int posicaoPersonagem = personagens.indexOf(personagemEscolhido);
-            personagens.set(posicaoPersonagem,personagen);
+            personagens.set(posicaoPersonagem, personagen);
         }
     }
 
-    public  List<Personagen> todos()
-    {
-         return  new    ArrayList<>(personagens);
+    private Personagen BuscaPersonagenId(Personagen personagen) {
+
+        for (Personagen p : personagens) {
+            if (p.getId() == personagen.getId()) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public List<Personagen> todos() {
+        return new ArrayList<>(personagens);
     }
 }
