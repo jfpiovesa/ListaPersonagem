@@ -2,11 +2,14 @@ package com.example.ListaPersonagem.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ListaPersonagem.dao.PersonagenDao;
@@ -22,6 +25,7 @@ import static com.example.ListaPersonagem.ui.activities.ConstantesActivities.TIT
 public class ListaPersonagemActivity extends AppCompatActivity {
 
     private final PersonagenDao dao = new PersonagenDao();
+    private ArrayAdapter<Personagen> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,7 @@ public class ListaPersonagemActivity extends AppCompatActivity {
         setTitle(TITULO_APPBAR_LISTA_PERSONAGENS);
 
         ConfiguraFabNovoPersonagem();
+        configuraLista();
     }
 
     private void ConfiguraFabNovoPersonagem() {
@@ -50,25 +55,42 @@ public class ListaPersonagemActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-
-        ListView listadePersonagem = findViewById(R.id.activity_main_lista_personagem);
-        final List<Personagen> personagens = dao.todos();
-        listaDePersonagens(listadePersonagem, personagens);
-
-        ConfiguraItenPorClique(listadePersonagem, personagens);
+        adapter.clear();
+        adapter.addAll(dao.todos());
     }
 
-    private void ConfiguraItenPorClique(ListView listadePersonagem, List<Personagen> personagens) {
-        listadePersonagem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                                     @Override
-                                                     public void onItemClick(AdapterView<?> adapterView, View view, int posicao, long id) {
-                                                         Personagen personagenEscolhido = (Personagen) adapterView.getItemAtPosition(posicao);
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add("Remover");
+    }
 
-                                                         AbreFormularioEditar(personagenEscolhido);
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Personagen personagemescolhido = adapter.getItem(menuInfo.position);
+        adapter.remove(personagemescolhido);
+        return super.onContextItemSelected(item);
+    }
 
-                                                     }
-                                                 }
+    private void configuraLista() {
+        ListView listaPersonagens = findViewById(R.id.activity_main_lista_personagem);
+        // final List<Personagen> personagens = dao.todos();
+        listaPersonagens(listaPersonagens);
+        ConfiguraItenPorClique(listaPersonagens);
+        registerForContextMenu(listaPersonagens);
+    }
+
+    private void ConfiguraItenPorClique(ListView listaPersonagens) {
+        listaPersonagens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                    @Override
+                                                    public void onItemClick(AdapterView<?> adapterView, View view, int posicao, long id) {
+                                                        Personagen personagenEscolhido = (Personagen) adapterView.getItemAtPosition(posicao);
+
+                                                        AbreFormularioEditar(personagenEscolhido);
+
+                                                    }
+                                                }
         );
     }
 
@@ -78,7 +100,8 @@ public class ListaPersonagemActivity extends AppCompatActivity {
         startActivity(vaiParaOfotmulario);
     }
 
-    private void listaDePersonagens(ListView listadePersonagem, List<Personagen> personagens) {
-        listadePersonagem.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, personagens));
+    private void listaPersonagens(ListView listaPersonagens) {
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        listaPersonagens.setAdapter(adapter);
     }
 }
