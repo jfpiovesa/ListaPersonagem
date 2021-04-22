@@ -14,10 +14,10 @@ public class PersonagenDao {
     {
         personagemSalvo.setId(contadorDeId);
         personagens.add(personagemSalvo);
-        AtualizaId();
+        atualizaId();
     }
 
-    private void AtualizaId() {
+    private void atualizaId() {
         contadorDeId++;
     }
 
@@ -42,5 +42,10 @@ public class PersonagenDao {
 
     public List<Personagen> todos() {
         return new ArrayList<>(personagens);
+    }
+
+    public void remover(Personagen personagemescolhido) {
+        personagens.remove(personagemescolhido);
+
     }
 }

@@ -1,5 +1,6 @@
 package com.example.ListaPersonagem.ui.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -10,14 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ListaPersonagem.dao.PersonagenDao;
 import com.example.ListaPersonagem.model.Personagen;
 import com.example.auladia11.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.List;
 
 import static com.example.ListaPersonagem.ui.activities.ConstantesActivities.CHAVE_PERSONAGEN;
 import static com.example.ListaPersonagem.ui.activities.ConstantesActivities.TITULO_APPBAR_LISTA_PERSONAGENS;
@@ -35,6 +35,8 @@ public class ListaPersonagemActivity extends AppCompatActivity {
 
         ConfiguraFabNovoPersonagem();
         configuraLista();
+
+
     }
 
     private void ConfiguraFabNovoPersonagem() {
@@ -55,6 +57,10 @@ public class ListaPersonagemActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        atualizaPersonagem();
+    }
+
+    private void atualizaPersonagem() {
         adapter.clear();
         adapter.addAll(dao.todos());
     }
@@ -62,15 +68,39 @@ public class ListaPersonagemActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add("Remover");
+        // menu.add("Remover");
+        getMenuInflater().inflate(R.menu.activity_lista_personagens_menu, menu);
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Personagen personagemescolhido = adapter.getItem(menuInfo.position);
-        adapter.remove(personagemescolhido);
+        configuraMenu(item);
         return super.onContextItemSelected(item);
+    }
+
+    private void configuraMenu(@NonNull MenuItem item) {
+        int itenID = item.getItemId();
+        if (itenID == R.id.activity_lista_personagem_menu_remover) {
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Removendo Personagem")
+                    .setMessage("Tem  certeza  que deseja  remover?")
+                    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                            Personagen personagemescolhido = adapter.getItem(menuInfo.position);
+                            remover(personagemescolhido);
+                        }
+                    })
+                    .setNegativeButton("Não", null)
+                    .show();
+        }
+    }
+
+    private void remover(Personagen personagemescolhido) {
+        dao.remover(personagemescolhido);
+        adapter.remove(personagemescolhido);
     }
 
     private void configuraLista() {
