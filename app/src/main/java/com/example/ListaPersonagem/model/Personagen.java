@@ -11,7 +11,7 @@ public class Personagen implements Serializable {
     private String altura;
     private int id = 0;
 
-
+    //metodo de encapsulamento de elementos usados  como nome, altura e nascimento
     public Personagen(String nome, String nascimento, String altura) {
         this.nome = nome;
         this.nacimento = nascimento;
@@ -30,7 +30,7 @@ public class Personagen implements Serializable {
         return nome;
     }
 
-
+     //pegando e setando  as varieaveis  que serão usadas
     public String getNome() {
         return nome;
     }

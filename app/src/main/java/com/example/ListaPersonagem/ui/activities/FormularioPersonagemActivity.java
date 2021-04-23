@@ -18,11 +18,11 @@ import static com.example.ListaPersonagem.ui.activities.ConstantesActivities.TIT
 
 public class FormularioPersonagemActivity extends AppCompatActivity {
 
-
+// variaveis para seren editar os texto referente a elas
     private EditText campoNome;
     private EditText campoNacimento;
     private EditText campoAltura;
-
+// variaveis para salvar  com referente seu nome
     private String nome;
     private String nascimento;
     private String altura;
@@ -31,7 +31,8 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
     private Personagen personagen;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)// metodo responsavel por criar o formulario dos personagens
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_personagem);
         inicializacaoCampos();
@@ -40,7 +41,8 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
 
     }
 
-    private void carregaPersonagen() {
+    private void carregaPersonagen()  //metodo para carregar os dados do personagem salvo
+    {
         Intent dados = getIntent();
         if (dados.hasExtra(CHAVE_PERSONAGEN)) {
             setTitle(TITULO_APPBAR_EDITA_PERSONAGEN);
@@ -52,13 +54,15 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
         }
     }
 
-    private void preencheCampos(Personagen personagen) {
+    private void preencheCampos(Personagen personagen) // meto para setar  os dados dos  personagem
+    {
         campoNome.setText(personagen.getNome());
         campoNacimento.setText(personagen.getNacimento());
         campoAltura.setText(personagen.getAltura());
     }
 
-    private void configuraBotaoSalvar() {
+    private void configuraBotaoSalvar()
+    {
         // Pegando  o botao de salvar, para por um listener de ações nele, no caso, salvar  informaçõa do personagem.
         Button btSalvar = findViewById(R.id.bt_salvar);
         btSalvar.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +74,8 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
         );
     }
 
-    private void finalizarFormulario() {
+    private void finalizarFormulario()
+    {
         prencherPersonagen();
         if (personagen.IdValido()) {
             dao.editar(personagen);
@@ -81,7 +86,8 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
         finish();
     }
 
-    private void prencherPersonagen() {
+    private void prencherPersonagen() // metodo que para pegar os dados foram salvos ou não e seta eles
+    {
 
 
         nome = campoNome.getText().toString();
@@ -93,7 +99,8 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
         personagen.setAltura(altura);
     }
 
-    private void inicializacaoCampos() {//Pegando os  ids referentes aos dados do personagem
+    private void inicializacaoCampos() // metodo Pegando os  ids referentes aos dados do personagem
+    {
         campoNome = findViewById(R.id.editTextText_Name);
         campoNacimento = findViewById(R.id.editText_Nascimento);
         campoAltura = findViewById(R.id.editText_Altura);

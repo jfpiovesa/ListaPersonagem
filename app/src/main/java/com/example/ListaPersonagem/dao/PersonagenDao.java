@@ -7,8 +7,8 @@ import java.util.List;
 
 public class PersonagenDao {
 
-    private final static List<Personagen> personagens = new ArrayList<>();
-    private static int contadorDeId = 1;
+    private final static List<Personagen> personagens = new ArrayList<>();// lista de personagens que seram criados
+    private static int contadorDeId = 1;// valor dado ao personagem criado para que ele tenha uma id
 
     public void salva(Personagen personagemSalvo)//metodo para salvar dados do personagem
     {
@@ -30,7 +30,8 @@ public class PersonagenDao {
         }
     }
 
-    private Personagen BuscaPersonagenId(Personagen personagen) {
+    private Personagen BuscaPersonagenId(Personagen personagen)// metodo que verifica a id do personagem e busca id referente ao personagem
+    {
 
         for (Personagen p : personagens) {
             if (p.getId() == personagen.getId()) {
@@ -44,7 +45,8 @@ public class PersonagenDao {
         return new ArrayList<>(personagens);
     }
 
-    public void remover(Personagen personagemescolhido) {
+    public void remover(Personagen personagemescolhido)// metodo para remover personagem da lista quando criado pra que não de erro de voltar
+    {
         personagens.remove(personagemescolhido);
 
     }
